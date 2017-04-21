@@ -9,4 +9,7 @@
     <string name="status">Status</string>
     <string name="show_stats">Stats</string>
     <string name="back">Back</string>
+    <string name="kmh_unit">%d km/h</string>
+    <string name="km_unit">%s km</string>
+    <string name="second_unit">%d seconds</string>
 </resources>
