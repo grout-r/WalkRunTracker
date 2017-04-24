@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
@@ -37,9 +39,11 @@ public class MainActivity extends Activity {
         previousLongitude = 0.0;
         previousLatitude = 0.0;
         buffer = new float[3];
+        kilometerHistory = new ArrayList<Integer>();
         totalDistance = 0f;
         avgCounter = 0;
         totalSpeed = 0;
+        previousKilometerTime = 0;
         df = new DecimalFormat("##.##");
         df.setRoundingMode(RoundingMode.DOWN);
 
@@ -58,11 +62,18 @@ public class MainActivity extends Activity {
                 avgCounter += 1;
                 average_tv.setText(String.format(getResources().getString(R.string.kmh_unit), Math.round(totalSpeed / avgCounter)));
 
-
                 distance_tv.setText(String.format(getResources().getString(R.string.km_unit), df.format(totalDistance / 1000)));
                 previousLatitude = location.getLatitude();
                 previousLongitude = location.getLongitude();
                 speed_tv.setText(String.format(getResources().getString(R.string.kmh_unit), Math.round(location.getSpeed() * 3.6)));
+
+
+                if ( ((int)totalDistance/1000) > kilometerHistory.size())
+                {
+                    long elapsedSec = ((SystemClock.elapsedRealtime() - chrono.getBase()) - previousKilometerTime) / 1000;
+                    previousKilometerTime = SystemClock.elapsedRealtime() - chrono.getBase();
+                    kilometerHistory.add((int)elapsedSec);
+                }
             }
             @Override
             public void onProviderDisabled(String provider) {}
@@ -112,31 +123,33 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, StatActivity.class);
-                //intent.putExtra();
+                intent.putIntegerArrayListExtra("history", kilometerHistory);
                 startActivity(intent);
             }
         });
 
     }
 
-    Context c = this;
-    TextView speed_tv;
-    TextView distance_tv;
-    TextView average_tv;
-    TextView status_tv;
-    Chronometer chrono;
-    Button stat_bt;
-    Button start_bt;
-    Button stop_bt;
-    LocationManager lm;
-    LocationListener ll;
-    DecimalFormat df;
+    Context             c = this;
+    TextView            speed_tv;
+    TextView            distance_tv;
+    TextView            average_tv;
+    TextView            status_tv;
+    Chronometer         chrono;
+    Button              stat_bt;
+    Button              start_bt;
+    Button              stop_bt;
+    LocationManager     lm;
+    LocationListener    ll;
+    DecimalFormat       df;
 
-    double previousLatitude;
-    double previousLongitude;
-    float[] buffer;
+    double              previousLatitude;
+    double              previousLongitude;
+    float[]             buffer;
 
-    float totalDistance;
-    float totalSpeed;
-    float avgCounter;
+    long                previousKilometerTime;
+    ArrayList<Integer>  kilometerHistory;
+    float               totalDistance;
+    float               totalSpeed;
+    float               avgCounter;
 }
