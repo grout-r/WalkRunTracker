@@ -52,14 +52,14 @@ public class StatView extends View {
             if (data.size() != 0)
             {
                 init = true;
-                int higestValue = Collections.max(data);
+                int highestValue = Collections.max(data);
                 int barWidth = pixelSize / data.size();
                 for (int i = 0; i != data.size(); i++)
                 {
-                    int left = barWidth * i + 70;
-                    int top = barWidth / (higestValue / data.get(i));
-                    int right = (barWidth * i) + barWidth;
-                    int bottom = 50;
+                    int left = barWidth * i;
+                    int top = pixelSize - (pixelSize / (highestValue / data.get(i)));
+                    int right = left + barWidth;
+                    int bottom = pixelSize;
                     bars.add(new Rect(left, top, right, bottom));
                 }
             }
@@ -69,15 +69,16 @@ public class StatView extends View {
     {
         //super call
         super.onDraw(canvas);
+        Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
+        blue.setColor(0xFF0000FF);
         if (!init && data != null)
         {
             initBars(canvas);
         }
         for (int i = 0; i != bars.size(); i++)
         {
-            canvas.drawRect(bars.get(i), barColor);
+            canvas.drawRect(bars.get(i), blue);
         }
-        canvas.drawRect(100, 100, 400, 400, barColor);
     }
     public boolean onTouchEvent(MotionEvent event) {
 
