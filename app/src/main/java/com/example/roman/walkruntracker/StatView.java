@@ -48,16 +48,16 @@ public class StatView extends View {
 
     private void initBars(Canvas canvas)
     {
-            pixelSize = canvas.getWidth();
             if (data.size() != 0)
             {
                 init = true;
+                pixelSize = canvas.getWidth() - ((canvas.getWidth() / data.size()) / 4);
                 int highestValue = Collections.max(data);
-                int barWidth = pixelSize / data.size();
+                int barWidth = (pixelSize / data.size()) - (((pixelSize / data.size()) / 4) );
                 for (int i = 0; i != data.size(); i++)
                 {
-                    int left = barWidth * i;
-                    int top = pixelSize - (pixelSize / (highestValue / data.get(i)));
+                    int left = ( (pixelSize / data.size() ) * i) + ((pixelSize / data.size()) / 4);
+                    int top = pixelSize - ((int)((float)pixelSize * 0.90) / (highestValue / data.get(i)));
                     int right = left + barWidth;
                     int bottom = pixelSize;
                     bars.add(new Rect(left, top, right, bottom));

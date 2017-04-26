@@ -24,15 +24,14 @@ public class StatActivity extends Activity {
         setContentView(R.layout.stat_activity);
         ArrayList<Integer> data = getIntent().getExtras().getIntegerArrayList("history");
         StatView custom = (StatView)findViewById(R.id.custom);
-        data = new ArrayList<Integer>();
-        float time = getIntent().getExtras().getFloat("time");
-        float distance = getIntent().getExtras().getFloat("distance");
-        float speed = getIntent().getExtras().getFloat("speed");
+        long time = getIntent().getExtras().getLong("time");
+        String distance = getIntent().getExtras().getString("distance");
+        int speed = getIntent().getExtras().getInt("speed");
         time_tv = (TextView)findViewById(R.id.stat_time);
         distance_tv = (TextView)findViewById(R.id.stat_distance_tv);
         speed_tv = (TextView)findViewById(R.id.stat_average_tv);
         time_tv.setText(String.valueOf(time));
-        distance_tv.setText(String.valueOf(distance));
+        distance_tv.setText(distance);
         speed_tv.setText(String.valueOf(speed));
         back = (Button)findViewById(R.id.back_bt);
         back.setOnClickListener(new View.OnClickListener() {
@@ -41,16 +40,6 @@ public class StatActivity extends Activity {
                 finish();
             }
         });
-
-        data.add(10);
-        data.add(18);
-        data.add(52);
-        data.add(23);
-        data.add(12);
-        data.add(18);
-        data.add(5);
-        data.add(44);
-
         custom.setValues(data);
     }
 

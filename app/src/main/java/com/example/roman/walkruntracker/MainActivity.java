@@ -124,9 +124,9 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, StatActivity.class);
                 intent.putIntegerArrayListExtra("history", kilometerHistory);
-                intent.putExtra("distance", totalDistance);
+                intent.putExtra("distance", df.format(totalDistance / 1000));
                 intent.putExtra("speed", Math.round(totalSpeed / avgCounter));
-                intent.putExtra("time", SystemClock.elapsedRealtime() - chrono.getBase());
+                intent.putExtra("time", (SystemClock.elapsedRealtime() - chrono.getBase()));
                 startActivity(intent);
             }
         });
